@@ -26,7 +26,8 @@ This assignment makes use of data from a personal activity monitoring device. Th
     }
     
 ## What is mean total number of steps taken per day?
-```{r, echo = TRUE}
+
+```r
 #### Reading the data from the “activity.csv”
     activityData = read.csv('./Data/activity.csv', header = TRUE, sep = ",", na.strings = "NA")
 
@@ -37,18 +38,38 @@ This assignment makes use of data from a personal activity monitoring device. Th
     
 total_of_steps_per_day <- sum(activityData$steps, na.rm = TRUE)
 total_of_steps_per_day
+```
 
+```
+## [1] 570608
+```
+
+```r
 ### Total number of steps per day
 
     totalSteps = sapply(splitDay, function(x) sum(x$steps))
     mean(totalSteps,na.rm = TRUE)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
     median(totalSteps,na.rm = TRUE)
+```
 
+```
+## [1] 10765
+```
+
+```r
     hist(totalSteps,main="Histogram of Frequency of TotalSteps/Day")
-    
- 
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
 
+```r
 ## What is the average daily activity pattern?
 
 #### Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
@@ -57,7 +78,11 @@ total_of_steps_per_day
     five_minutes_average <- aggregate(steps~interval, data=activityData, FUN=mean, na.rm=TRUE)
     
     plot(x = five_minutes_average$interval, y = five_minutes_average$steps, type = "l") 
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-1-2.png)<!-- -->
+
+```r
 #### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 #### Using the funtion max() in order to find the maximum number of steps. And, using a for{} loop to find the 5 minute interval with maximum number of steps
 
@@ -68,7 +93,13 @@ total_of_steps_per_day
             five_minute_interval_at_max_steps <- five_minutes_average$interval[i]
     }
     five_minute_interval_at_max_steps 
+```
 
+```
+## [1] 835
+```
+
+```r
 ### Imputing missing values
 ####Note that there are a number of days/intervals where there are missing values (coded as NA). The presence of missing days may introduce bias into some calculations or summaries of the data.
 
@@ -77,7 +108,13 @@ total_of_steps_per_day
     ####Counts number of na values in steps
     numNa = sum(is.na(activityData$steps))
     numNa
-   
+```
+
+```
+## [1] 2304
+```
+
+```r
 ####Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 ####The strategy will be to fill in the dataset the with the mean of that 5 minute interval
     
@@ -113,11 +150,28 @@ total_of_steps_per_day
     # Plots histogram of the number of total steps per day
     
     hist(totalNa,main="Histogram of Frequency of TotalSteps/Day", xlab="Total number of Steps")
-    
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-1-3.png)<!-- -->
+
+```r
 ####4b Calculate the mean and median and explain the imoact of imputing missing data on the estimates of the total daily number of steps
     mean(totalNa)
-    median(totalNa)
+```
 
+```
+## [1] 10766.19
+```
+
+```r
+    median(totalNa)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 #### Due to that we use the mean value the new estimates of mean did not change
 
 #### Due to that we use the mean value the new estimates of median change more close to the mean
@@ -164,7 +218,6 @@ total_of_steps_per_day
     weekday_frame <- activity_filled_in[weekday,]
     weekend_frame <- activity_filled_in[-weekday,]
 
-
     # What  is the average daily activity pattern?
     
     ## Make a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, 
@@ -173,6 +226,11 @@ total_of_steps_per_day
     five_minutes_average_weekend <- aggregate(steps~interval, data=weekend_frame, FUN=mean, na.rm=TRUE)
     
     plot(x = five_minutes_average_weekday$interval, y = five_minutes_average_weekday$steps, type = "l") 
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-1-4.png)<!-- -->
+
+```r
     ##The plot is setup to show the differences in the average steps vs time period between weekends and weekdays
    
         # Creates the plots
@@ -180,4 +238,6 @@ total_of_steps_per_day
         
         plot(x = five_minutes_average_weekday$interval, y = five_minutes_average_weekday$steps,xlab="Interval(steps)", ylab="Average Steps", type = "l",main ="Weekday vs Avg Steps",)
         plot(x = five_minutes_average_weekend$interval, y = five_minutes_average_weekend$steps,xlab="Interval(steps)", ylab="Average Steps", type = "l",main ="Weekend vs Avg Steps") 
-    ```
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-1-5.png)<!-- -->
